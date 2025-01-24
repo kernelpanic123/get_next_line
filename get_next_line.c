@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:58 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/24 20:51:34 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:25:57 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_next_line(int fd)
 {
 	char	*buff;
 	char	*line;
-	static char	*str = NULL;
+	static char	*str;
 	int		byte_read;
 
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
@@ -27,25 +27,25 @@ char	*get_next_line(int fd)
 	while (ft_strchr(line, '\n') == NULL)
 	{
 		byte_read = read(fd, buff, BUFFER_SIZE);
-		if (byte_read < 0)
+		if (byte_read <= 0)
 			return (NULL);
 		buff[byte_read] = '\0';
 		line = ft_strjoin(line, buff);
+		printf("%s\n", line);
 	}
-
 	return (line);
 }
 
 int	main(void)
 {
 	int		fd;
-	char 	*line;
+	char	*line;
 
 	fd = open("test.txt", O_RDONLY);
 	while (1)
 	{
 		line = get_next_line(fd);
-		printf("%s", line);
+		printf("%s\n", line);
 		if (line == NULL)
 			break ;
 		free(line);
