@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:51 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/24 23:21:34 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/25 15:35:17 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,28 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	return (mot);
+}
+char	*ft_strdup(const	char *s1)
+{
+	int		i;
+	char	*s2;
+
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		i++;
+	}
+	s2 = malloc(sizeof(char) * (i + 1));
+	if (!s2)
+	{
+		return (NULL);
+	}
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
 }

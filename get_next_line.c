@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:58 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/24 23:25:57 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/25 17:04:15 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,79 @@ char	*get_next_line(int fd)
 {
 	char	*buff;
 	char	*line;
-	static char	*str;
+	static	char	*str;
 	int		byte_read;
 
+	if (!str)
+        str = ft_strdup("");
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 		return (NULL);
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	while (ft_strchr(line, '\n') == NULL)
+	while (ft_strchr(str, '\n') == NULL)
 	{
 		byte_read = read(fd, buff, BUFFER_SIZE);
 		if (byte_read <= 0)
+		{
+			free(buff);
 			return (NULL);
+		}
 		buff[byte_read] = '\0';
-		line = ft_strjoin(line, buff);
-		printf("%s\n", line);
+		str = ft_strjoin(str, buff);
 	}
+	line = extract_line(str);
+	str = update_static_str(str);
 	return (line);
+}
+
+char	*update_static_str(char *str)
+{
+	int	i;
+	int	j;
+	char	*new_str;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\0' && str[i] != '\n')
+	{
+		i++;
+	}
+	if (!str[i])
+	{
+		free(str);
+		return (NULL);
+	}
+	new_str = malloc((ft_strlen(str) - i + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i++;
+	while (str[i] != '\0')
+		new_str[j++] = str[i++];
+	new_str[j] = '\0';
+	free(str);
+	return (new_str);
+}
+
+char	*extract_line(char *str)
+{
+	int		i;
+	int		j;
+	char	*new_str;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\0' && str[i] != '\n')
+		i++;
+	new_str = malloc((i + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	while (str[j] != '\0' && str[j] != '\n')
+	{
+		new_str[j] = str[j];
+		j++;
+	}
+	return (new_str);
 }
 
 int	main(void)
