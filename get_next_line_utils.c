@@ -6,16 +6,18 @@
 /*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:51 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/25 15:35:17 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:07:33 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	size_t	i;
+	int	i;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i] != '\0')
 	{
@@ -26,13 +28,26 @@ size_t ft_strlen(char *str)
 
 char	*ft_strchr(const char *s, int c)
 {
-	while ((char)c != *s)
+	int	i;
+
+	i = 0;
+	if (s == NULL)
 	{
-		if (!*s)
-			return (NULL);
-		s++;
+		return (NULL);
 	}
-	return ((char *)s);
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char)c)
+		{
+			return ((char *)&s[i]);
+		}
+		i++;
+	}
+	if (s[i] == (char)c)
+	{
+		return ((char *)&s[i]);
+	}
+	return (NULL);
 }
 char	*copy_word(char *s1)
 {
@@ -57,6 +72,8 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
+	if (!s1 && !s2)
+		return (NULL);
 	mot = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!mot)
 	{
@@ -74,6 +91,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	return (mot);
 }
+
 char	*ft_strdup(const	char *s1)
 {
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:04:01 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/25 16:10:18 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:03:41 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 100
+#  define BUFFER_SIZE 10
 # endif
 
 char	*get_next_line(int fd);
-size_t	ft_strlen(char *str);
+int		ft_strlen(char *str);
 char	*ft_strchr(const char *s, int c);
 char	*copy_word(char *s1);
 char	*ft_strjoin(char *s1, char *s2);
