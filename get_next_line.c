@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:58 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/26 19:31:42 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:52:23 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,13 @@ char	*get_next_line(int fd)
 {
 	char			*buff;
 	char			*line;
-	static	char	*str;
+	static char		*str;
 	int				byte_read;
 
+	if (mandatory(fd, &buff) == 0)
+		return (NULL);
 	if (!str)
 		str = ft_strdup("");
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buff)
-		return (NULL);
-	if (fd < 0 || BUFFER_SIZE < 0)
-		return (NULL);
 	while (ft_strchr(str, '\n') == NULL)
 	{
 		byte_read = read(fd, buff, BUFFER_SIZE);
@@ -82,22 +79,23 @@ char	*extract_line(char *str)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (str[i] != '\n')
+	while (str[i] && str[i] != '\n')
 		i++;
 	new_str = malloc((i + (str[i] == '\n') + 1) * sizeof(char));
 	if (!new_str)
 		return (NULL);
-	while (str[j] && str[j] != '\n')
+	while (j < i)
 	{
 		new_str[j] = str[j];
 		j++;
 	}
-	new_str[j] = '\n';
-	new_str[j + 1] = '\0';
+	if (str[i] == '\n')
+		new_str[j++] = '\n';
+	new_str[j] = '\0';
 	return (new_str);
 }
 
-int	main(void)
+/*int	main(void)
 {
 	int		fd;
 	char	*line;
@@ -112,4 +110,4 @@ int	main(void)
 		free(line);
 	}
 	return (0);
-}
+}*/
