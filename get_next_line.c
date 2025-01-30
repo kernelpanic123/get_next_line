@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:58 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/30 03:17:55 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:48:04 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ char	*get_next_line(int fd)
 {
 	char			*buff;
 	char			*line;
-	static char		*str = NULL;
+	static char		*str;
 	int				byte_read;
+	char			*temp;
 
 	if (mandatory(fd, &buff) == 0)
 		return (NULL);
@@ -34,7 +35,9 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		buff[byte_read] = '\0';
-		str = ft_strjoin(str, buff);
+		temp = ft_strjoin(str, buff);
+		free(str);
+		str = temp;
 	}
 	if (ft_strchr(str, '\n') != NULL)
 		free(buff);
@@ -49,8 +52,6 @@ char	*update_static_str(char *str)
 	int		j;
 	char	*new_str;
 
-	if (!str)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i] && str[i] != '\n')
@@ -103,7 +104,7 @@ char	*extract_line(char *str)
 	return (new_str);
 }
 
-int	main(void)
+int main(void)
 {
 	int		fd;
 	char	*line;
