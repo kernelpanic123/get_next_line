@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:58 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/30 17:48:04 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/30 21:12:27 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,44 @@
 
 char	*get_next_line(int fd)
 {
-	char			*buff;
-	char			*line;
-	static char		*str;
-	int				byte_read;
-	char			*temp;
+	char		*buff;
+	char		*line;
+	static char	*str;
 
 	if (mandatory(fd, &buff) == 0)
 		return (NULL);
 	if (!str)
 		str = ft_strdup("");
-	while (ft_strchr(str, '\n') == NULL)
-	{
-		byte_read = read(fd, buff, BUFFER_SIZE);
-		if (byte_read <= 0)
-		{
-			free(buff);
-			if (byte_read == 0)
-				break ;
-			return (NULL);
-		}
-		buff[byte_read] = '\0';
-		temp = ft_strjoin(str, buff);
-		free(str);
-		str = temp;
-	}
+	if (!read_and_update_buffer(fd, &str, &buff))
+		return (NULL);
 	if (ft_strchr(str, '\n') != NULL)
 		free(buff);
 	line = extract_line(str);
 	str = update_static_str(str);
 	return (line);
+}
+
+int	read_and_update_buffer(int fd, char **str, char **buff)
+{
+	int		byte_read;
+	char	*temp;
+
+	while (ft_strchr(*str, '\n') == NULL)
+	{
+		byte_read = read(fd, *buff, BUFFER_SIZE);
+		if (byte_read <= 0)
+		{
+			free(*buff);
+			if (byte_read == 0)
+				break ;
+			return (0);
+		}
+		(*buff)[byte_read] = '\0';
+		temp = ft_strjoin(*str, *buff);
+		free(*str);
+		*str = temp;
+	}
+	return (1);
 }
 
 char	*update_static_str(char *str)
@@ -104,7 +112,7 @@ char	*extract_line(char *str)
 	return (new_str);
 }
 
-int main(void)
+/*int main(void)
 {
 	int		fd;
 	char	*line;
@@ -120,4 +128,4 @@ int main(void)
 	}
 	close(fd);
 	return (0);
-}
+}*/

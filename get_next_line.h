@@ -6,7 +6,7 @@
 /*   By: abtouait <abtouait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:04:01 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/30 03:16:33 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/30 21:11:46 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stddef.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 7
 # endif
 
 char	*get_next_line(int fd);
@@ -31,5 +31,6 @@ char	*ft_strdup(char *s1);
 char	*extract_line(char *str);
 char	*update_static_str(char *str);
 int		mandatory(int fd, char **buff);
+int		read_and_update_buffer(int fd, char **str, char **buff);
 
 #endif
