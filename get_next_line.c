@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: abtouait <abtouait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:58 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/28 15:52:23 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/30 03:17:55 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_next_line(int fd)
 {
 	char			*buff;
 	char			*line;
-	static char		*str;
+	static char		*str = NULL;
 	int				byte_read;
 
 	if (mandatory(fd, &buff) == 0)
@@ -26,16 +26,18 @@ char	*get_next_line(int fd)
 	while (ft_strchr(str, '\n') == NULL)
 	{
 		byte_read = read(fd, buff, BUFFER_SIZE);
-		if (byte_read < 0)
+		if (byte_read <= 0)
 		{
 			free(buff);
+			if (byte_read == 0)
+				break ;
 			return (NULL);
 		}
-		if (byte_read == 0)
-			break ;
 		buff[byte_read] = '\0';
 		str = ft_strjoin(str, buff);
 	}
+	if (ft_strchr(str, '\n') != NULL)
+		free(buff);
 	line = extract_line(str);
 	str = update_static_str(str);
 	return (line);
@@ -60,7 +62,10 @@ char	*update_static_str(char *str)
 	}
 	new_str = malloc((ft_strlen(str) - i) * sizeof(char));
 	if (!new_str)
+	{
+		free(str);
 		return (NULL);
+	}
 	i++;
 	while (str[i] != '\0')
 		new_str[j++] = str[i++];
@@ -90,12 +95,15 @@ char	*extract_line(char *str)
 		j++;
 	}
 	if (str[i] == '\n')
-		new_str[j++] = '\n';
+	{
+		new_str[j] = '\n';
+		j++;
+	}
 	new_str[j] = '\0';
 	return (new_str);
 }
 
-/*int	main(void)
+int	main(void)
 {
 	int		fd;
 	char	*line;
@@ -109,5 +117,6 @@ char	*extract_line(char *str)
 		printf("%s", line);
 		free(line);
 	}
+	close(fd);
 	return (0);
-}*/
+}

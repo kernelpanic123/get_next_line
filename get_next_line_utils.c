@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abtouait <abtouait@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: abtouait <abtouait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:03:51 by abtouait          #+#    #+#             */
-/*   Updated: 2025/01/28 15:50:57 by abtouait         ###   ########.fr       */
+/*   Updated: 2025/01/30 03:17:07 by abtouait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,9 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
 	mot = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!mot)
-	{
 		return (NULL);
-	}
 	while (s1[i] != '\0')
 	{
 		mot[i] = s1[i];
@@ -85,15 +81,15 @@ char	*ft_strdup(char *s1)
 	char	*s2;
 
 	i = 0;
+	if (!s1)
+		return (NULL);
 	while (s1[i] != '\0')
 	{
 		i++;
 	}
-	s2 = malloc(sizeof(char) * (i + 1));
+	s2 = malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (!s2)
-	{
 		return (NULL);
-	}
 	i = 0;
 	while (s1[i] != '\0')
 	{
@@ -106,10 +102,10 @@ char	*ft_strdup(char *s1)
 
 int	mandatory(int fd, char **buff)
 {
-	if (fd < 0 || BUFFER_SIZE < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	*buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (*buff == NULL)
+	if (!*buff)
 		return (0);
 	return (1);
 }
